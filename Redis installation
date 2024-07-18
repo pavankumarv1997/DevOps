@@ -1,0 +1,24 @@
+Redis Installation Steps
+
+
+1. apt install redis-server -y
+2. sudo systemctl start redis-server
+3. sudo systemctl enable redis-server
+4. redis-cli ping
+5.  to make it accessible from outside
+        a. sudo nano /etc/redis/redis.conf  --> bind 0.0.0.0 (by default it will be 127.0.0.1::*)
+
+6. sudo systemctl restart redis-server
+
+
+if you want to set password
+1. sudo nano /etc/redis/redis.conf 
+2. search for requirepass 
+    a. uncomment and set the password --> requirepass new_password
+3. sudo systemctl restart redis-server
+
+
+check the connection 
+
+1. redis-cli -h <host IP> -p 6379 -a <password>
+2. ping
