@@ -85,3 +85,13 @@ Ensure that the user 'yutitech' has appropriate permissions to connect to the da
     -- Grant EXECUTE privilege on functions (if needed)
     GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA public TO yutitech;
 
+
+OR
+
+to give all privileges
+
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO yutitech;
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO yutitech;
+GRANT ALL PRIVILEGES ON ALL FUNCTIONS IN SCHEMA public TO yutitech;
+
+
