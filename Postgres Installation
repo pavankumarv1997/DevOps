@@ -1,0 +1,87 @@
+Create EC2 instance
+-- login to the server and go to root user using command
+
+   sudo su
+
+-- update all the packages 
+
+  sudo apt update
+
+--  install postgresql
+
+sudo apt install postgresql
+
+-- start postgresql
+
+sudo systemctl start postgresql
+
+-- enable postgresql
+
+sudo systemctl enable postgresql
+
+
+Configure PostgreSQL for Remote Access
+By default, PostgreSQL on AWS EC2 instances typically listens only on localhost. To allow remote connections:
+
+Edit the PostgreSQL configuration file (postgresql.conf):
+
+    sudo nano /var/lib/pgsql/data/postgresql.conf
+    OR
+    sudo nano /etc/postgresql/16/main/postgresql.conf
+
+Find the line that starts with listen_addresses and change it to:
+
+    listen_addresses = '*'
+
+This allows PostgreSQL to listen on all network interfaces.
+
+Edit the pg_hba.conf file to allow remote connections. Add this line to allow connections from any IP address (not recommended for production, use a specific IP or subnet):
+
+
+      sudo nano /var/lib/pgsql/data/pg_hba.conf
+      OR
+      sudo nano /var/lib/pgsql/data/pg_hba.conf
+
+Add this add last
+      host    all             all             0.0.0.0/0               md5
+
+
+now restart postgresql
+
+
+------------------------------------------------- DB AND ACESS CHANGES --------------------------------------------------
+
+
+1. Verify PostgreSQL User and Password
+      Ensure that the PostgreSQL user 'yutitech' exists and has the correct password set. You can check this by connecting to PostgreSQL locally on your EC2 instance:
+      
+        sudo -u postgres psql
+      
+      
+      Then, list all roles to verify 'yutitech' exists and check its settings:
+      
+        \du
+      
+      If the user 'yutitech' doesn't exist or needs its password reset, you can create or alter the user as follows:
+      
+            -- To create the user
+            CREATE ROLE yutitech WITH LOGIN PASSWORD 'your_password';
+            
+            -- To alter the password (if needed)
+            ALTER ROLE yutitech WITH PASSWORD 'new_password';
+
+2. Grant Permissions
+Ensure that the user 'yutitech' has appropriate permissions to connect to the database. Typically, you grant permissions like this:
+
+    -- Grant CONNECT privilege to the database
+    GRANT CONNECT ON DATABASE your_database TO yutitech;
+    
+    -- Grant USAGE privilege on the schema (if needed)
+    GRANT USAGE ON SCHEMA public TO yutitech;
+
+    -- Grant SELECT, INSERT, UPDATE, DELETE privileges on tables (if needed)
+    GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO yutitech;
+
+    -- Grant EXECUTE privilege on functions (if needed)
+    GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA public TO yutitech;
+
